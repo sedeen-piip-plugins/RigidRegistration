@@ -47,7 +47,7 @@
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm_ext/push_back.hpp>
 #include <boost/range/irange.hpp>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 namespace pt = boost::property_tree;
 
@@ -102,7 +102,7 @@ namespace sedeen {
 			pt::ptree xml_tree;
 
 		public:
-			boost::filesystem::path xml_registration_file_ = "";
+			std::filesystem::path xml_registration_file_ = "";
 			bool loadRegionParam();
 			bool saveRegionParam(const std::string &filename);
 			//		RegionParameters findNearestRegionParam();

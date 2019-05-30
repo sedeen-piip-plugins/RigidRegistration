@@ -18,50 +18,30 @@ FIND_PACKAGE( SEDEENSDK REQUIRED
                     "$ENV{${PROGRAMFILESX86}}/Sedeen Viewer SDK/v5.4.1.20190327/msvc2017"
                     "$ENV{PROGRAMFILES}/Sedeen Viewer SDK/v5.4.1.20190327/msvc2017" )
 
-# There is a dependency on boost.filesystem
+# There is a dependency on Boost
 IF(NOT BOOST_ROOT)
   SET(BOOST_ROOT "BOOST_ROOT-NOTFOUND" CACHE PATH "Installation prefix of the Boost C++ libraries")
 ENDIF()
 IF(NOT BOOST_VERSION)
   SET(BOOST_VERSION "BOOST_VERSION-NOTFOUND" CACHE STRING "Boost library version number")
 ENDIF()
-FIND_PACKAGE(Boost ${BOOST_VERSION} REQUIRED COMPONENTS
-                 filesystem )
+FIND_PACKAGE(Boost ${BOOST_VERSION} REQUIRED ) 
 
-# Load the included OpenCV libs
-#FIND_PACKAGE(SEDEENSDK_OPENCV REQUIRED
-#             HINTS ../../..
-#                  "$ENV{${PROGRAMFILESX86}}/Sedeen Viewer SDK/v5.4.1.20190327/msvc2017"
-#                  "$ENV{PROGRAMFILES}/Sedeen Viewer SDK/v5.4.1.20190327/msvc2017" )
-
-## Load OpenCV dependency
+## Load OpenCV dependency, set value of OPENCV_DIR
 FIND_PACKAGE(OPENCV REQUIRED)
-#SET (CMAKE_PREFIX_PATH "D:/Documents/Libraries/opencv-3.1.0_Contrib/build/install" )
-#FIND_PACKAGE( OPENCV REQUIRED "D:/Documents/Libraries/opencv-3.1.0_Contrib/build/install" )
-
-#INCLUDE_DIRECTORIES( "C:/Program Files (x86)/Sedeen Viewer SDK/v5.2.3.629/msvc2012/include" 
-#		"D:/Documents/Libraries/opencv-3.1.0_Contrib/build/install/include" 
-#		"D:/Documents/Libraries/opencv-3.1.0_Contrib/build/install/include/opencv" 
-#		"D:/Documents/Libraries/opencv-3.1.0_Contrib/build/install/include/opencv2"
-#		"C:/Boost/include/boost-1_55")
-
-#LINK_DIRECTORIES( "C:/Program Files (x86)/Sedeen Viewer SDK/v5.2.3.629/msvc2012/lib" 
-#		"D:/Documents/Libraries/opencv-3.1.0_Contrib/build/install/x86/vc12/lib"
-#		"C:/Boost/lib/i386" 
-#		"C:/Program Files (x86)/Sedeen Viewer SDK/v5.2.3.629/msvc2012/bin")
-
+SET(OPENCV_INCLUDE_DIR "${OPENCV_DIR}/include" CACHE PATH "Directory containing OpenCV include files, has opencv and opencv2 subdirectories")
+SET(OPENCV_LIB_DIR "${OPENCV_DIR}/x64/vc15/lib" CACHE PATH "Directory containing static OpenCV libraries")
+SET(OPENCV_DLL_DIR "${OPENCV_DIR}/x64/vc15/bin" CACHE PATH "Directory containing dynamic OpenCV libraries")
 
 INCLUDE_DIRECTORIES( ${INCLUDE_DIRECTORIES} ${SEDEENSDK_INCLUDE_DIR} 
                      ${BOOST_ROOT} 
-                     #${SEDEENSDK_OPENCV_INCLUDE_DIR} I need to get and compile opencv contrib
-                     "D:/libraries/opencv/Install/include"
-                     "D:/libraries/opencv/Install/include/opencv"
-                     "D:/libraries/opencv/Install/include/opencv2"
+                     ${OPENCV_INCLUDE_DIR}
+                     "${OPENCV_INCLUDE_DIR}/opencv"
+                     "${OPENCV_INCLUDE_DIR}/opencv2"
                      )
 LINK_DIRECTORIES( ${LINK_DIRECTORIES} ${SEDEENSDK_LIBRARY_DIR} 
                      "${BOOST_ROOT}/stage/lib" 
-                     #${SEDEENSDK_OPENCV_LIBRARY_DIR} I need to get and compile opencv contrib
-                     "D:/libraries/opencv/Install/x64/vc15/lib"
+                     ${OPENCV_LIB_DIR}
                      ) 
 
 ##
@@ -70,33 +50,12 @@ ADD_LIBRARY( ${PROJECT_NAME} MODULE ${PROJECT_NAME}.h ${PROJECT_NAME}.cpp
                                     tinyxml2.h tinyxml2.cpp ) 
 
 TARGET_LINK_LIBRARIES( ${PROJECT_NAME} ${SEDEENSDK_LIBRARIES}
-                           #${SEDEENSDK_OPENCV_LIBRARIES} 
-                           Boost::filesystem 
-                           image.lib 
-                           global.lib 
-                           algorithm.lib 
-                           archive.lib 
                            bindings_opencv.lib 
                            opencv_core340.lib
                            opencv_imgproc340.lib
-                           #opencv_ts340.lib 
                            opencv_features2d340.lib 
                            opencv_xfeatures2d340.lib
                            )
-
-# Link the library against the Sedeen libraries
-# NOTE: The QT libraries must be linked first.
-#TARGET_LINK_LIBRARIES( RigidRegistration image.lib global.lib algorithm.lib archive.lib 
-#		bindings_opencv.lib opencv_core310.lib opencv_imgproc310.lib opencv_ts310.lib 
-#		opencv_features2d310.lib opencv_xfeatures2d310.lib) 
-
-## 
-##
-## Install the plugin in the sedeen plugins directory
-##IF( ${PATHCORE_FOUND} )
-#  INSTALL( TARGETS RigidRegistration LIBRARY DESTINATION "C:/Program Files (x86)/Sedeen Viewer/plugins/cpp/piip/RigidRegistration" )
-##ENDIF()
-
 
 #Create or update the .info file in the build directory
 STRING( TIMESTAMP DATE_CREATED_TEXT "%Y-%m-%d" )
@@ -119,10 +78,8 @@ IF( ${SEDEEN_FOUND} )
       LIBRARY DESTINATION "${PLUGIN_DESTINATION_DIR}")
   INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.info"
       DESTINATION "${PLUGIN_DESTINATION_DIR}")
-  #INSTALL(DIRECTORY "${SEDEENSDK_DIR}/bin/" 
-  #      DESTINATION "${PLUGIN_DESTINATION_DIR}" 
-  #      FILES_MATCHING PATTERN "opencv*0.dll" )
-  INSTALL(DIRECTORY "D:/libraries/opencv/Install/x64/vc15/bin/"
+
+  INSTALL(DIRECTORY "${OPENCV_DLL_DIR}/"
         DESTINATION "${PLUGIN_DESTINATION_DIR}" 
         FILES_MATCHING PATTERN "opencv*0.dll" )
 ENDIF()
