@@ -38,7 +38,7 @@ POCO_END_MANIFEST
 
 using namespace cv;
 using namespace std;
-using namespace boost;
+//using namespace boost;
 using namespace tinyxml2;
 
 

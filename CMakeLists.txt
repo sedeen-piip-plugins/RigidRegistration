@@ -19,13 +19,13 @@ FIND_PACKAGE( SEDEENSDK REQUIRED
                     "$ENV{PROGRAMFILES}/Sedeen Viewer SDK/v5.4.1.20190327/msvc2017" )
 
 # There is a dependency on Boost
-IF(NOT BOOST_ROOT)
-  SET(BOOST_ROOT "BOOST_ROOT-NOTFOUND" CACHE PATH "Installation prefix of the Boost C++ libraries")
-ENDIF()
-IF(NOT BOOST_VERSION)
-  SET(BOOST_VERSION "BOOST_VERSION-NOTFOUND" CACHE STRING "Boost library version number")
-ENDIF()
-FIND_PACKAGE(Boost ${BOOST_VERSION} REQUIRED ) 
+#IF(NOT BOOST_ROOT)
+#  SET(BOOST_ROOT "BOOST_ROOT-NOTFOUND" CACHE PATH "Installation prefix of the Boost C++ libraries")
+#ENDIF()
+#IF(NOT BOOST_VERSION)
+#  SET(BOOST_VERSION "BOOST_VERSION-NOTFOUND" CACHE STRING "Boost library version number")
+#ENDIF()
+#FIND_PACKAGE(Boost ${BOOST_VERSION} REQUIRED ) 
 
 ## Load OpenCV dependency, set value of OPENCV_DIR
 FIND_PACKAGE(OPENCV REQUIRED)

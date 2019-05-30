@@ -41,15 +41,7 @@
 #include <opencv2/core/types.hpp>
 #include <opencv2/core/optim.hpp>
 
-// include Boost headers
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/foreach.hpp>
-#include <boost/range/algorithm_ext/push_back.hpp>
-#include <boost/range/irange.hpp>
 #include <filesystem>
-
-namespace pt = boost::property_tree;
 
 namespace sedeen {
 	namespace algorithm {
@@ -99,7 +91,6 @@ namespace sedeen {
 			RegionParameters curr_reg_param;
 			RegionParameters nearest_reg_param;
 			//std::list<RegionParameters> reg_param_list;
-			pt::ptree xml_tree;
 
 		public:
 			std::filesystem::path xml_registration_file_ = "";
@@ -108,7 +99,7 @@ namespace sedeen {
 			//		RegionParameters findNearestRegionParam();
 			bool findNearestRegionParam(Rect *);
 			bool addCurrentParamToList();
-			bool updateXMLTree();
+			//bool updateXMLTree();
 			bool deleteNodefromParamList(std::string nodeName);
 			bool deleteNodefromTargetList(std::string nodeName);
 		};
