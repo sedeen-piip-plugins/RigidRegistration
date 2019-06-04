@@ -1,13 +1,33 @@
-/******************************************************/
-// Author: Rushin Shojaii
-// 
-// RigidRegistration is a Plugin (DLL) for Sedeen Viewer 
-// It uses DenseSIFT features for source and target images 
-// and register them by minimzing the distance between the features.
-// inputs and outputs are through Sedeen Viewer.
-//
-/******************************************************/
-
+/*=============================================================================
+ *
+ *  Copyright (c) 2019 Sunnybrook Research Institute
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
+ *
+ *  Author: Rushin Shojaii
+ *
+ *  RigidRegistration is a Plugin (DLL) for Sedeen Viewer
+ *  It uses DenseSIFT features for source and target images
+ *  and register them by minimzing the distance between the features.
+ *  inputs and outputs are through Sedeen Viewer.
+ *
+ *=============================================================================*/
 
 #ifndef SEDEEN_SRC_PLUGINS_RIGIDREGISTRATION_RIGIDREGISTRATION_H
 #define SEDEEN_SRC_PLUGINS_RIGIDREGISTRATION_RIGIDREGISTRATION_H
@@ -41,15 +61,7 @@
 #include <opencv2/core/types.hpp>
 #include <opencv2/core/optim.hpp>
 
-// include Boost headers
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/foreach.hpp>
-#include <boost/range/algorithm_ext/push_back.hpp>
-#include <boost/range/irange.hpp>
-#include <boost/filesystem.hpp>
-
-namespace pt = boost::property_tree;
+#include <filesystem>
 
 namespace sedeen {
 	namespace algorithm {
@@ -99,16 +111,15 @@ namespace sedeen {
 			RegionParameters curr_reg_param;
 			RegionParameters nearest_reg_param;
 			//std::list<RegionParameters> reg_param_list;
-			pt::ptree xml_tree;
 
 		public:
-			boost::filesystem::path xml_registration_file_ = "";
+			std::filesystem::path xml_registration_file_ = "";
 			bool loadRegionParam();
 			bool saveRegionParam(const std::string &filename);
 			//		RegionParameters findNearestRegionParam();
 			bool findNearestRegionParam(Rect *);
 			bool addCurrentParamToList();
-			bool updateXMLTree();
+			//bool updateXMLTree();
 			bool deleteNodefromParamList(std::string nodeName);
 			bool deleteNodefromTargetList(std::string nodeName);
 		};
